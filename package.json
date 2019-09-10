@@ -1,0 +1,23 @@
+{
+  "name": "Margay",
+  "version": "1.0.0",
+  "description": "Nuxt.js sample application using Firebase",
+  "author": "Tenderfeel",
+  "private": true,
+  "scripts": {
+    "dev": "MINIMAL=1 CSB=1 nuxt",
+    "build": "nuxt generate",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "post-update": "yarn upgrade --latest"
+  },
+  "dependencies": {
+    "@nuxt/http": "^0.3.0",
+    "awesome-phonenumber": "2.18.0",
+    "firebase": "6.6.0",
+    "firebaseui": "4.2.0",
+    "nuxt": "^2.5.1",
+    "reqlim": "^0.0.0"
+  },
+  "keywords": []
+}
