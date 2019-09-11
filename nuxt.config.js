@@ -20,7 +20,13 @@ export default {
         content: "Nuxt.js sample application using Firebase."
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      {
+        rel: "stylesheet",
+        href: "https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css"
+      }
+    ]
   },
 
   /*

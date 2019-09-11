@@ -29,12 +29,7 @@ export default {
 
   head() {
     return {
-      link: [
-        {
-          rel: "stylesheet",
-          href: "https://cdn.firebase.com/libs/firebaseui/4.2.0/firebaseui.css"
-        }
-      ]
+      title: "Login"
     };
   },
 
@@ -54,7 +49,7 @@ export default {
           { user, isNewUser, credential },
           redirectUrl
         ) => {
-          console.info("signIn success😸");
+          console.info("signIn success 😸");
           this.$store.commit("setUser", user);
           return this.$router.push("/");
         },
@@ -66,7 +61,12 @@ export default {
           this.isLoading = false;
         }
       },
-      signInOptions: [firebase.auth.TwitterAuthProvider.PROVIDER_ID],
+      signInOptions: [
+        {
+          provider: firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+          defaultCountry: "JP"
+        }
+      ],
       tosUrl: "https://xpbrg.sse.codesandbox.io/about",
       privacyPolicyUrl: "https://xpbrg.sse.codesandbox.io/about"
     });

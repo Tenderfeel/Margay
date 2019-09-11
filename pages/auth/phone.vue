@@ -3,42 +3,30 @@
     <h2>Phone Number Linking</h2>
     <p class="loading" v-if="isLoading">Loading...</p>
 
-    <!-- 電話番号入力＆vericationIdなしで表示-->
+    <!-- vericationIdなしで表示-->
     <form v-if="isShowPhoneNumberInput" @submit.prevent="handlePhoneNumberSubmit">
       <p>確認コードを送信する電話番号を入力してください
         <br>（以下のテスト用番号も利用できます）
       </p>
-      <pre>電話番号（確認コード）
-        +1 650-555-3434（123456）
-        +81 90-1234-5678（123456）
-        +84 841 755 601（825467）
-        +81 90-3214-9875（986143）
-      </pre>
+      <SampleNumbers/>
       <div>
-        <input type="phone" v-model="phoneNumber" @input="error = null">
+        <input type="phone" v-model="phoneNumber" @input="error = null" required>
         <p v-if="error && error.type === 'phone'" class="error">{{ error.message }}</p>
       </div>
+      <!-- reCAPTCHA -->
+      <div id="recaptcha-container" ref="recaptcha"></div>
       <button type="submit" class="button--green">Submit</button>
     </form>
-    <!-- reCAPTCHA -->
-    <div id="recaptcha-container" ref="recaptcha" v-show="isShowRecaptcha"></div>
 
     <!-- 電話番号入力済み＆vericationId取得済み＆verificationCodeなしで表示 -->
     <form v-if="isShowVerificationCodeInput" @submit.prevent="handleVerificationCodeSubmit">
       <p>携帯端末に送信された確認コードを入力してください</p>
-      <pre>電話番号（確認コード）
-        +1 650-555-3434（123456）
-        +31 85 730 0812（971520）
-        +55 21 75214-6325（716561）
-        +81 90-1234-5678（123456）
-        +84 841 755 601（825467）
-        +221 263878910（582412）
-      </pre>
+      <SampleNumbers/>
       <input type="number" v-model="verificationCode" maxlength="6" minlength="6">
       <button type="submit" class="button--green">Submit</button>
     </form>
 
-    <p class="message">なにかエラーが発生したときはアカウント消すこと</p>
+    <p class="message">何かエラーが発生したときはアカウント消してください</p>
 
     <NLink to="/" class="button--grey">Back home</NLink>
   </section>
@@ -49,8 +37,29 @@
 //https://firebase.google.com/docs/auth/web/phone-auth
 import firebase from "@/firebase/";
 import { mapState } from "vuex";
+
+const SampleNumbers = {
+  functional: true,
+  props: {
+    numbers: {
+      type: Array,
+      default: () => [
+        "+1 650-555-3434（123456）",
+        "+81 90-1234-5678（123456）",
+        "+81 90-3214-9875（986143）",
+        "+84 841 755 601（825467）"
+      ]
+    }
+  },
+  render(h, { props }) {
+    return h("pre", {}, ["電話番号（確認コード）\n", props.numbers.join("\n")]);
+  }
+};
+
 export default {
   name: "Auth",
+
+  components: { SampleNumbers },
 
   validate({ store, redirect }) {
     if (store.state.user && store.state.user.is2FactorAuthed) {
@@ -75,7 +84,7 @@ export default {
   computed: {
     ...mapState(["user"]),
     isShowPhoneNumberInput() {
-      return !this.isVaridPhone && !this.verificationId;
+      return !this.verificationId;
     },
     isShowVerificationCodeInput() {
       return this.isVaridPhone && this.verificationId && !this.phoneCredential;
@@ -96,25 +105,22 @@ export default {
       {
         // ユーザーが正常な応答を送信したときに実行される
         callback: responseToken => {
-          console.log("reCAPTCHA successful");
-          try {
-            this.isShowRecaptcha = false;
-          } catch (e) {}
+          console.log("🐾reCAPTCHA successful");
         },
 
         //reCAPTCHA応答が期限切れになり、ユーザーが再検証する必要があるときに実行される
         "expired-callback": function() {
-          console.log("reCAPTCHA Response expired");
+          console.log("🐾reCAPTCHA Response expired");
         },
 
         // reCAPTCHAでエラー（通常はネットワーク接続）が発生し、接続が復元されるまで続行できない場合に実行される
         "error-callback": function() {
-          console.log("reCAPTCHA error");
+          console.log("🐾reCAPTCHA error");
         }
       }
     );
 
-    //this.recaptchaWidgetId = await this.recaptchaVerifier.render();
+    this.recaptchaWidgetId = await this.recaptchaVerifier.render();
     this.isLoading = false;
   },
 
@@ -159,7 +165,7 @@ export default {
         // 指定された電話番号に確認コードを送信する
         // firebase.auth.PhoneAuthProvider.credentialに渡すIDが返される
         this.verificationId = await provider.verifyPhoneNumber(
-          this.phoneNumber,
+          pn.getNumber(),
           this.recaptchaVerifier
         );
       } catch (e) {
@@ -177,7 +183,7 @@ export default {
 
       try {
         //電話認証資格情報を作成
-        this.phoneCredential = await firebase.auth.PhoneAuthProvider.credential(
+        this.phoneCredential = firebase.auth.PhoneAuthProvider.credential(
           this.verificationId,
           this.verificationCode
         );
@@ -224,7 +230,7 @@ input {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2rem auto;
+  margin: 1rem auto;
 }
 
 button[type="submit"] {

@@ -10,8 +10,9 @@
           href="https://en.wikipedia.org/wiki/Margay"
           target="_blank"
           rel="nofollow noopener"
-        >Wikipedia Margay</a>
+        >😼Wikipedia Margay</a>
       </p>
+      <p>Firebaseを試すだけのデモアプリなので認証以外は特に何もしません。</p>
       <p>
         <NLink to="/" class="button--grey">Back home</NLink>
       </p>

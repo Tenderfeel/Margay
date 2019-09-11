@@ -14,12 +14,12 @@
     <div class="links">
       <NLink
         v-if="user && ! user.is2FactorAuthed"
-        to="/auth"
+        to="/auth/phone"
         class="button--green"
-      >Phone Number Linking</NLink>
+      >電話番号認証(CustomUI)</NLink>
     </div>
     <div class="links">
-      <NLink v-if="!user" to="/login" class="button--green">Login</NLink>
+      <NLink v-if="!user" to="/auth/" class="button--green">Login</NLink>
       <button v-else class="button--red" @click="logout">Logout</button>
       <NLink to="/about" class="button--grey">About</NLink>
     </div>
