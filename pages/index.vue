@@ -12,11 +12,7 @@
     </p>
     <p v-if="user && user.is2FactorAuthed">電話番号認証済み</p>
     <div class="links">
-      <NLink
-        v-if="user && ! user.is2FactorAuthed"
-        to="/auth/phone"
-        class="button--green"
-      >電話番号認証(CustomUI)</NLink>
+      <NLink v-if="user && ! user.is2FactorAuthed" to="/auth/phone" class="button--green">電話番号認証</NLink>
     </div>
     <div class="links">
       <NLink v-if="!user" to="/auth/" class="button--green">Login</NLink>

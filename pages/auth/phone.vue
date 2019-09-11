@@ -15,7 +15,7 @@
       </div>
       <!-- reCAPTCHA -->
       <div id="recaptcha-container" ref="recaptcha"></div>
-      <button type="submit" class="button--green">Submit</button>
+      <button type="submit" class="button--green" :disabled="isLoading">Submit</button>
     </form>
 
     <!-- 電話番号入力済み＆vericationId取得済み＆verificationCodeなしで表示 -->
@@ -23,7 +23,7 @@
       <p>携帯端末に送信された確認コードを入力してください</p>
       <SampleNumbers/>
       <input type="number" v-model="verificationCode" maxlength="6" minlength="6">
-      <button type="submit" class="button--green">Submit</button>
+      <button type="submit" class="button--green" :disabled="isLoading">Submit</button>
     </form>
 
     <p class="message">何かエラーが発生したときはアカウント消してください</p>
@@ -37,24 +37,7 @@
 //https://firebase.google.com/docs/auth/web/phone-auth
 import firebase from "@/firebase/";
 import { mapState } from "vuex";
-
-const SampleNumbers = {
-  functional: true,
-  props: {
-    numbers: {
-      type: Array,
-      default: () => [
-        "+1 650-555-3434（123456）",
-        "+81 90-1234-5678（123456）",
-        "+81 90-3214-9875（986143）",
-        "+84 841 755 601（825467）"
-      ]
-    }
-  },
-  render(h, { props }) {
-    return h("pre", {}, ["電話番号（確認コード）\n", props.numbers.join("\n")]);
-  }
-};
+import SampleNumbers from "@/components/SampleNumbers";
 
 export default {
   name: "Auth",
