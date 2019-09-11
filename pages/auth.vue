@@ -159,7 +159,7 @@ export default {
         // 指定された電話番号に確認コードを送信する
         // firebase.auth.PhoneAuthProvider.credentialに渡すIDが返される
         this.verificationId = await provider.verifyPhoneNumber(
-          pn.getNumber(),
+          this.phoneNumber,
           this.recaptchaVerifier
         );
       } catch (e) {

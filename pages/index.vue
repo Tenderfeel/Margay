@@ -10,7 +10,7 @@
       <img :src="user.photo" alt="photo">
       <strong>{{ user.name }}</strong>
     </p>
-    <p v-if="user && user.is2FactorAuthed">電話番号階認証済み</p>
+    <p v-if="user && user.is2FactorAuthed">電話番号認証済み</p>
     <div class="links">
       <NLink
         v-if="user && ! user.is2FactorAuthed"
