@@ -30,6 +30,20 @@ html {
   margin: 0;
 }
 
+a {
+  color: #2E495E;
+  text-decoration: none;
+}
+a:hover,
+a:focus {
+  color: #1b95e0;
+  text-decoration: underline;
+}
+a:active,
+a:hover {
+  outline-width: 0;
+}
+
 .container {
   min-height: 100vh;
   display: flex;
@@ -49,6 +63,11 @@ html {
   padding: 10px 30px;
   background: #fff;
   cursor: pointer;
+}
+
+[class^="button"]:hover,
+[class^="button"]:focus {
+  text-decoration: none;
 }
 
 [class^="button"] + [class^="button"] {
