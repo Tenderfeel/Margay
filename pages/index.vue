@@ -11,8 +11,9 @@
       <strong>{{ user.name }}</strong>
     </p>
     <p v-if="user && user.is2FactorAuthed">電話番号認証済み</p>
-    <div class="links">
-      <NLink v-if="user && ! user.is2FactorAuthed" to="/auth/phone" class="button--green">電話番号認証</NLink>
+    <div class="links" v-if="user">
+      <NLink v-if="! user.is2FactorAuthed" to="/auth/phone" class="button--green">電話番号認証</NLink>
+      <NLink to="/secret" class="button--green">秘密基地</NLink>
     </div>
     <div class="links">
       <NLink v-if="!user" to="/auth/" class="button--green">Login</NLink>

@@ -2,6 +2,7 @@ import * as firebase from "firebase/app";
 
 import "firebase/auth";
 import "firebase/database";
+import "firebase/functions";
 
 if (!firebase.apps.length) {
   firebase.initializeApp({
